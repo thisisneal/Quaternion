@@ -9,6 +9,28 @@ type Quaternion struct {
     W, X, Y, Z float64
 }
 
+// Construction of unit quaternion from Euler angles,
+//  sequence (1,2,3) / (R,P,Y) in radians
+func fromRPY(r, p, y float64) Quaternion {
+    sy2 := math.Sin(y / 2.0)
+    sp2 := math.Sin(p / 2.0)
+    sr2 := math.Sin(r / 2.0)
+
+    cy2 := math.Cos(y / 2.0)
+    cp2 := math.Cos(p / 2.0)
+    cr2 := math.Cos(r / 2.0)
+
+    qRPY := Quaternion {
+        cy2 * cp2 * cr2 + sy2 * sp2 * sr2,
+        cy2 * cp2 * sr2 - sy2 * sp2 * cr2,
+        cy2 * sp2 * cr2 + sy2 * cp2 * sr2,
+        sy2 * cp2 * cr2 - cy2 * sp2 * sr2,
+    }
+    return qRPY
+}
+
+// Construction of unit quaternion from Euler angles,
+//  sequence (3,2,1) / (R,P,Y) in radians
 func fromYPR(y, p, r float64) Quaternion {
     sy2 := math.Sin(y / 2.0)
     sp2 := math.Sin(p / 2.0)
@@ -18,13 +40,13 @@ func fromYPR(y, p, r float64) Quaternion {
     cp2 := math.Cos(p / 2.0)
     cr2 := math.Cos(r / 2.0)
 
-    q1 := Quaternion {
-        cy2 * cp2 * cr2 + sy2 * sp2 * sr2,
-        cy2 * cp2 * sr2 - sy2 * sp2 * cr2,
-        cy2 * sp2 * cr2 + sy2 * cp2 * sr2,
-        sy2 * cp2 * cr2 - cy2 * sp2 * sr2,
+    qYPR := Quaternion {
+        cy2 * cp2 * cr2 - sy2 * sp2 * sr2,
+        sy2 * cp2 * cr2 + cy2 * sp2 * sr2,
+        cy2 * sp2 * cr2 - sy2 * cp2 * sr2,
+        sy2 * sp2 * cr2 + cy2 * cp2 * sr2,
     }
-    return q1
+    return qYPR
 }
 
 func (quat *Quaternion) Conjugate() {
