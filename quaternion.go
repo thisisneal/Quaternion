@@ -49,6 +49,35 @@ func fromYPR(y, p, r float64) Quaternion {
     return qYPR
 }
 
+// Construction of a unit quaternion to represent
+//  a rotation of ϴ radians about the unit vector n
+func fromAxisAngle(nx, ny, nz, ϴ float64) Quaternion {
+    cϴ2 := math.Cos(ϴ / 2.0)
+    sϴ2 := math.Sin(ϴ / 2.0)
+
+    qAϴ := Quaternion {
+        cϴ2,
+        nx * sϴ2,
+        ny * sϴ2,
+        nz * sϴ2,
+    }
+    return qAϴ
+}
+
+func (quat Quaternion) getAxisAngle() (nx, ny, nz, ϴ float64) {
+    ϴ = 2.0 * math.Acos(quat.W)
+    sqrtdiff := math.Sqrt(1.0 - quat.W * quat.W)
+    nx = quat.X / sqrtdiff
+    ny = quat.Y / sqrtdiff
+    nz = quat.Z / sqrtdiff
+    return
+}
+
+func getAxisAngle(quat Quaternion) (nx, ny, nz, ϴ float64) {
+    nx, ny, nz, ϴ = quat.getAxisAngle()
+    return
+}
+
 func (quat *Quaternion) Conjugate() {
     quat.Star()
 }
