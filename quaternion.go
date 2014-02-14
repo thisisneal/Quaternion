@@ -114,7 +114,7 @@ func (qq *Quaternion) Times(pp Quaternion) {
     tmp.Y = -qq.X * pp.Z + qq.Y * pp.W + qq.Z * pp.X + qq.W * pp.Y;
     tmp.Z =  qq.X * pp.Y - qq.Y * pp.X + qq.Z * pp.W + qq.W * pp.Z;
     tmp.W = -qq.X * pp.X - qq.Y * pp.Y - qq.Z * pp.Z + qq.W * pp.W;
-    *q1 = tmp
+    *qq = tmp
 }
 
 func Product(aa, bb Quaternion) Quaternion {
