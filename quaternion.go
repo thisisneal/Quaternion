@@ -109,10 +109,12 @@ func Sum(aa, bb Quaternion) Quaternion {
 
 // Non-commutative quaternion product (qq * pp)
 func (qq *Quaternion) Times(pp Quaternion) {
-    qq.W = qq.W * pp.W - qq.X * pp.X - qq.Y * pp.Y - qq.Z * pp.Z
-    qq.X = qq.X * pp.W - qq.W * pp.X - qq.Z * pp.Y - qq.Y * pp.Z
-    qq.Y = qq.Y * pp.W - qq.Z * pp.X - qq.W * pp.Y - qq.X * pp.Z
-    qq.Z = qq.Z * pp.W - qq.Y * pp.X - qq.X * pp.Y - qq.W * pp.Z
+    var tmp = Quaternion{}
+    tmp.X =  qq.X * pp.W + qq.Y * pp.Z - qq.Z * pp.Y + qq.W * pp.X;
+    tmp.Y = -qq.X * pp.Z + qq.Y * pp.W + qq.Z * pp.X + qq.W * pp.Y;
+    tmp.Z =  qq.X * pp.Y - qq.Y * pp.X + qq.Z * pp.W + qq.W * pp.Z;
+    tmp.W = -qq.X * pp.X - qq.Y * pp.Y - qq.Z * pp.Z + qq.W * pp.W;
+    *qq = tmp
 }
 
 func Product(aa, bb Quaternion) Quaternion {
